@@ -7,6 +7,7 @@ import { Textarea } from '@/components/ui/textarea';
 
 const Index = () => {
   const [activeSection, setActiveSection] = useState('home');
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const services = [
     {
@@ -84,10 +85,39 @@ const Index = () => {
               </button>
             ))}
           </div>
-          <Button className="md:hidden" variant="ghost" size="icon">
-            <Icon name="Menu" size={24} />
+          <Button 
+            className="md:hidden" 
+            variant="ghost" 
+            size="icon"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          >
+            <Icon name={mobileMenuOpen ? "X" : "Menu"} size={24} />
           </Button>
         </div>
+        {mobileMenuOpen && (
+          <div className="md:hidden bg-background border-t border-border">
+            <div className="container mx-auto px-4 py-6 flex flex-col gap-4">
+              {['home', 'services', 'about', 'testimonials', 'contact'].map((section) => (
+                <button
+                  key={section}
+                  onClick={() => {
+                    scrollToSection(section);
+                    setMobileMenuOpen(false);
+                  }}
+                  className={`text-left text-lg uppercase tracking-wide transition-colors py-2 ${
+                    activeSection === section ? 'text-accent' : 'text-foreground hover:text-accent'
+                  }`}
+                >
+                  {section === 'home' && 'Главная'}
+                  {section === 'services' && 'Услуги'}
+                  {section === 'about' && 'Обо мне'}
+                  {section === 'testimonials' && 'Отзывы'}
+                  {section === 'contact' && 'Контакты'}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
       </nav>
 
       <section id="home" className="min-h-screen pt-24 pb-12">
